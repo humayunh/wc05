@@ -9,7 +9,7 @@
 \printanswers
 
 \title{Weekly Challenge 05: Master Theorem\\CS 412 Algorithms: Design and Analysis}
-\author{team-name}  % <==== replace with your team name for grading
+\author{q1-Team-05}  % <==== replace with your team name for grading
 \date{Habib University | Spring 2023}
 
 \runningheader{CS 412: Algorithms}{WC05: Master Theorem}{\theauthor}
@@ -47,9 +47,158 @@
   \underline{Tip}: You may consider \href{https://stackoverflow.com/a/68054319/1382487}{\texttt{time.perf\_counter()}} (detailed tutorial \href{https://realpython.com/python-timer/#other-python-timer-functions}{here}) for timing purposes.
   
   \begin{solution}
-    % Enter your solution here.
+  \\
+  Master Theorem:\\
+  Theorem 4.1 (Master theorem)
+  Let $a > 0$ and $b > 1$ be constants, and let f(n) be a driving function that is
+  defined and non-negative on all sufficiently large reals. Define the recurrence T(n) on $n \in N$ by\\
+  \\
+  $T(n) = aT(n/b) + f(n)$\\
+  
+  Where $aT(n/b)$ actually means $a'T([n/b])+a''T([n/b])$ 
+  \\for some constants $a'\geq 0$ and $a''\geq 0$ satisfying $a=a'+a''$. Then the asymptotic behavior of $T(n)$ can be characterized as follows: 
+  \begin{enumerate}
+  \item If there exists a constant $\epsilon > 0$ such that $f(n)=O(n^{\log_{b}a - \epsilon})$ then $T(n)=\theta(n^{\log_{b} a})$
+  \item If there exists a constant $k > 0$ such that $f(n)=\theta(n^{\log_{b} a} lg^k n)$, then $T(n)=\theta(n^{\log_{b} a} lg^{k+1} n)$
+  \item If there exists a constant $\epsilon > 0$ such that $f(n)= \Omega (n^{\log_{b}a + \epsilon})$ if f(n) additionally satisfies the regularity condition $af(n/b) \leq cf(n)$ for some constant
+  $c < 1$ and all sufficiently large n, then $T(n) =
+  \theta(f(n))$ 
+  \end{enumerate}
+  
+  \end{solution}
+  
+  
+  \begin{solution}
+  \\
+  \\\textbf{Recurrences 1:}
+  \begin{itemize}
+  \item $T_A(n) = 2 T_A(\frac{n}{2}) + n^2$
+  \item $T_B(n) = 1 T_B(\frac{n}{2}) + n^2$
+  \end{itemize}
+
+  \textbf{Recurrences 2:}
+  \begin{itemize}
+  \item $T_C(n) = 2T_C(\frac{n}{2}) + n$
+  \item $T_D(n) = 3T_D(\frac{n}{3}) + n$
+  \end{itemize}
+  
+  \textbf{Justify:}\\
+  \\
+  $T_A(n)$:
+  \\$a=2$
+  \\$b=2$
+  \\$d=2$
+  \\case: $d>\log_b{a}$
+  \\$2>\log_2{2}$
+  \\Hence The time complexity is $T_A(n) = O(n^d) = O(n^2)$
+  \\
+  \\
+  $T_B(n)$:
+  \\$a=1$
+  \\$b=2$
+  \\$d=2$
+  \\case: $d>\log_b{a}$
+  \\$2>\log_2{1}$
+  \\Hence The time complexity is $T_B(n) = O(n^d) = O(n^2)$
+  \\
+  \\
+  $T_C(n)$:
+  \\$a=2$
+  \\$b=2$
+  \\$d=1$
+  \\case: $d=\log_b{a}$
+  \\$1=\log_2{2}$
+  \\Hence The time complexity is $T_C(n) = O(n^dlogn) = O(nlogn)$
+  \\
+  \\
+  $T_D(n)$:
+  \\$a=3$
+  \\$b=3$
+  \\$d=1$
+  \\case: $d=\log_b{a}$ 
+  \\$1=\log_3{3}$
+  \\Hence The time complexity is $T_D(n) = O(n^dlogn) = O(nlogn)$
   \end{solution}
 
+  \begin{solution}
+  \textbf{Solve 1:}\\
+  $T_A(n)$:
+  \\Using Back substitution method:\\
+  When $n=1$
+  \\$T_A(n) = 2 T_A(\frac{n}{2}) + n^2$
+  \\$T_A(n)=1$
+  \\When $n>1$;
+  \\
+  \\First Equation:
+  \\$T_A(n)= 2T_C(\frac{n}{2}) + n$
+  \\Expanding for n/2;
+  \\$T_A(n/2)= 2T_A(\frac{n}{2^2}) + n^2/2^2$
+  \\Substituting back in First equation;
+  \\$T_A(n)= 2[2T_A(\frac{n}{2^2}) + n^2/2^2] + n^2$
+  \\
+  \\Second equation:
+  \\$T_A(n)= 2^2T_A(\frac{n}{2^2}) + n^2/2 + n^2$
+  \\Expanding for $n/2^2$;
+  \\$T_A(n/2^2)= 2T_A(\frac{n}{2^3}) + n^2/2^4$
+  \\Substituting back in Second equation;
+  \\$T_A(n)= 2^2[2T_A(\frac{n}{2^3}) + n^2/2^4] + n^2/2 + n^2$
+  \\Third equation:
+  \\$T_A(n)= 2^3T_A(\frac{n}{2^3}) + n^2/2^2 + n^2/2 + n^2$
+  \\For k times:
+  \\$T_A(n)= 2^kT_A(\frac{n}{2^k}) + n^2(1/2^2+1/2+1)$
+  \\We assume $T_C(n/2^k) = T(1)$ 
+  \\Then, $n/s^k = 1$
+  \\$n = 2^k$
+  \\$k=^n\log 2$
+  \\
+  \\$T_A(n)= 2^kT_A(1) + n^2$
+  \\$T_A(n)= 2^n\log 2 + n^2$
+  \\$O(n^2)$
+\textbf{Solve 2:}\\
+\\
+$T_C(n)$:
+\\
+Using Back substitution method:\\
+When $n=1$;
+\\$T_C(n)=1$
+\\When $n>1$;
+\\$T_C(n)= 2T_C(\frac{n}{2}) + n$
+\\
+\\First equation:
+\\$T_C(n)= 2T_C(\frac{n}{2}) + n$
+\\Expanding for n/2;
+\\$T_C(n/2)= 2T_C(\frac{n}{2^2}) + n/2$
+\\Substituting back in First equation;
+\\$T_C(n)= 2[2T_C(\frac{n}{2^2}) + n/2] + n$
+\\
+\\Second equation:
+\\$T_C(n)= 2^2T_C(\frac{n}{2^2}) + 2n$
+\\Expanding for $n/2^2$;
+\\$T_C(n/2^2)= 2T_C(\frac{n}{2^3}) + n/2^2$
+\\Substituting back in Second equation;
+\\$T_C(n)= 2^2[2T_C(\frac{n}{2^3}) + n/2^2] + 2n$
+\\
+\\Third equation:
+\\$T_C(n)= 2^3T_C(\frac{n}{2^3}) + 3n$
+\\
+\\For k times:
+\\$T_C(n)= 2^kT_C(\frac{n}{2^k}) + kn$
+\\
+\\We assume $T_C(n/2^k) = T(1)$ 
+\\Then, $n/s^k = 1$
+\\$n = 2^k$
+\\$logn = klog2$
+\\$k=logn$
+\\
+\\Substituting the calculated values;
+\\$2^k=1, T(1)=1, k=logn$
+\\$T_C(n)= 2^kT_C(1) + kn$
+\\$T_C(n)= n.1 + nlogn$
+\\Hence, $T_C(n)=\Theta(nlogn)$
+  \end{solution}
+References:
+
+  
 \end{questions}
 
-\end{document}
+\end{document}  
